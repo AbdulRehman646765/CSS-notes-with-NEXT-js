@@ -1,6 +1,6 @@
 export type Language = 'en' | 'roman_urdu' | 'hi' | 'ar';
 
-export type Theme = 'dark' | 'light';
+export type Theme = 'system' | 'light' | 'dark';
 
 export type FontSize = 'small' | 'normal' | 'large';
 
@@ -30,6 +30,7 @@ export interface Topic {
 
 export interface NotesContextType {
   theme: Theme;
+  setTheme: (theme: Theme) => void;
   toggleTheme: () => void;
   language: Language;
   setLanguage: (lang: Language) => void;

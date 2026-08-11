@@ -13,7 +13,8 @@ export const useNotes = () => {
 };
 
 export const NotesProvider = ({ children }: { children: React.ReactNode }) => {
-  const [theme, setTheme] = useState<Theme>('dark');
+  const [theme, setThemeState] = useState<Theme>('dark');
+  const [resolvedTheme, setResolvedTheme] = useState<'dark' | 'light'>('dark');
   const [language, setLanguage] = useState<Language>('roman_urdu');
   const [fontSize, setFontSizeState] = useState<'small' | 'normal' | 'large'>('normal');
   const [completedTopics, setCompletedTopics] = useState<string[]>([]);
@@ -32,7 +33,7 @@ export const NotesProvider = ({ children }: { children: React.ReactNode }) => {
     const savedCompleted = JSON.parse(localStorage.getItem('css_notes_completed') || '[]');
     const savedSaved = JSON.parse(localStorage.getItem('css_notes_saved') || '[]');
 
-    if (savedTheme) setTheme(savedTheme);
+    if (savedTheme) setThemeState(savedTheme);
     if (savedLang) setLanguage(savedLang);
     if (savedFont) setFontSizeState(savedFont);
     setCompletedTopics(savedCompleted);
@@ -40,12 +41,37 @@ export const NotesProvider = ({ children }: { children: React.ReactNode }) => {
     setMounted(true);
   }, []);
 
-  // Apply theme to document
+  // System theme detection & resolution
   useEffect(() => {
     if (!mounted) return;
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('css_notes_theme', theme);
+
+    const updateResolvedTheme = () => {
+      if (theme === 'system') {
+        const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setResolvedTheme(isDark ? 'dark' : 'light');
+      } else {
+        setResolvedTheme(theme);
+      }
+    };
+
+    updateResolvedTheme();
+
+    if (theme === 'system') {
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      const listener = (e: MediaQueryListEvent) => {
+        setResolvedTheme(e.matches ? 'dark' : 'light');
+      };
+      mediaQuery.addEventListener('change', listener);
+      return () => mediaQuery.removeEventListener('change', listener);
+    }
   }, [theme, mounted]);
+
+  // Apply theme attribute to document
+  useEffect(() => {
+    if (!mounted) return;
+    document.documentElement.setAttribute('data-theme', resolvedTheme);
+    localStorage.setItem('css_notes_theme', theme);
+  }, [theme, resolvedTheme, mounted]);
 
   // Apply font size to document
   useEffect(() => {
@@ -60,8 +86,12 @@ export const NotesProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.setItem('css_notes_language', language);
   }, [language, mounted]);
 
+  const setTheme = useCallback((newTheme: Theme) => {
+    setThemeState(newTheme);
+  }, []);
+
   const toggleTheme = useCallback(() => {
-    setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
+    setThemeState(prev => (prev === 'dark' ? 'light' : prev === 'light' ? 'system' : 'dark'));
   }, []);
 
   const setFontSize = useCallback((size: 'small' | 'normal' | 'large') => {
@@ -95,6 +125,7 @@ export const NotesProvider = ({ children }: { children: React.ReactNode }) => {
 
   const value: NotesContextType = {
     theme,
+    setTheme,
     toggleTheme,
     language,
     setLanguage,
