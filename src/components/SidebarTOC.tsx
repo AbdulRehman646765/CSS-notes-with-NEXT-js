@@ -48,9 +48,9 @@ export default function SidebarTOC() {
 
   const filteredTopics = tocSearchQuery.trim()
     ? topicsData.filter(t =>
-        t.title.toLowerCase().includes(tocSearchQuery.toLowerCase()) ||
-        t.tag.toLowerCase().includes(tocSearchQuery.toLowerCase())
-      )
+      t.title.toLowerCase().includes(tocSearchQuery.toLowerCase()) ||
+      t.tag.toLowerCase().includes(tocSearchQuery.toLowerCase())
+    )
     : topicsData;
 
   const scrollToTopic = (id: string) => {
@@ -108,8 +108,8 @@ export default function SidebarTOC() {
             const isActive = activeTopicId === topic.id;
 
             return (
-              <li 
-                key={topic.id} 
+              <li
+                key={topic.id}
                 className={`${isCompleted ? 'toc-completed' : ''} ${isActive ? 'active-topic' : ''}`}
               >
                 <a
@@ -126,6 +126,25 @@ export default function SidebarTOC() {
               </li>
             );
           })}
+          {/* Practice Quiz */}
+          <div className="toc-practice-section">
+            <a
+              href="/quiz"
+              className="toc-practice-btn"
+              onClick={() => setSidebarOpen(false)}
+            >
+              <span className="toc-practice-icon">
+                <i className="fa-solid fa-graduation-cap" />
+              </span>
+
+              <span className="toc-practice-content">
+                <strong>Practice Quiz</strong>
+                <small>Test your CSS knowledge</small>
+              </span>
+
+              <i className="fa-solid fa-arrow-right toc-practice-arrow" />
+            </a>
+          </div>
         </ul>
       </nav>
     </>

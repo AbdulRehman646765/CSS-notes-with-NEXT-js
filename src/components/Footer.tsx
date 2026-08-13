@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { useNotes } from '../context/NotesContext';
 import { Theme } from '../types';
+import Link from 'next/link';
 
 export default function Footer() {
   const [email, setEmail] = useState('');
@@ -194,10 +195,10 @@ export default function Footer() {
               Bookmarks
             </button>
 
-            <button type="button" className="footer-link-btn" onClick={() => handleResourceClick('practice')}>
+            <Link href='/quiz' className="footer-link-btn" onClick={() => handleResourceClick('practice')}>
               <i className="fa-solid fa-chevron-right" />
               Practice
-            </button>
+            </Link>
 
             <button type="button" className="footer-link-btn" onClick={() => handleResourceClick('all')}>
               <i className="fa-solid fa-chevron-right" />
@@ -252,7 +253,7 @@ export default function Footer() {
                   <i className="fa-brands fa-github" />
                 </a>
                 <a
-                  href="https://linkedin.com"
+                  href="https://www.linkedin.com/in/abdul-rehman-73a769220/"
                   target="_blank"
                   rel="noopener noreferrer"
                   title="LinkedIn"
@@ -261,13 +262,22 @@ export default function Footer() {
                   <i className="fa-brands fa-linkedin-in" />
                 </a>
                 <a
-                  href="https://youtube.com"
+                  href="https://wa.me/+923403148438"
                   target="_blank"
                   rel="noopener noreferrer"
-                  title="YouTube"
-                  aria-label="YouTube"
+                  title="WhatsApp"
+                  aria-label="WhatsApp"
                 >
-                  <i className="fa-brands fa-youtube" />
+                  <i className="fa-brands fa-whatsapp" />
+                </a>
+                <a
+                  href="https://www.instagram.com/abdul._.x56"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Instagram"
+                  aria-label="Instagram"
+                >
+                  <i className="fa-brands fa-instagram" />
                 </a>
                 <a
                   href="https://twitter.com"
@@ -278,6 +288,20 @@ export default function Footer() {
                 >
                   <i className="fa-brands fa-x-twitter" />
                 </a>
+                <div className="footer-feedback-link-wrapper">
+                  <Link
+                    href="/feedback"
+                    className="footer-feedback-link"
+                    aria-label="Give Feedback"
+                  >
+                    <span className="footer-feedback-link-left">
+                      {/* <i className="fa-solid fa-comment-dots" /> */}
+                      <span>Give Feedback</span>
+                    </span>
+
+                    <i className="fa-solid fa-arrow-right footer-feedback-arrow" />
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
@@ -311,8 +335,8 @@ export default function Footer() {
                       t === 'system'
                         ? 'fa-solid fa-desktop'
                         : t === 'light'
-                        ? 'fa-solid fa-sun'
-                        : 'fa-solid fa-moon'
+                          ? 'fa-solid fa-sun'
+                          : 'fa-solid fa-moon'
                     }
                   />
                   <span>{t.charAt(0).toUpperCase() + t.slice(1)}</span>

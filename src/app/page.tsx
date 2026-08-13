@@ -3,7 +3,7 @@ import Header from '../components/Header';
 import SidebarTOC from '../components/SidebarTOC';
 import ProgressDashboard from '../components/ProgressDashboard';
 import TopicList from '../components/TopicList';
-import QuizSection from '../components/QuizSection';
+// import QuizSection from '../components/QuizSection';
 import Footer from '../components/Footer';
 import BackToTop from '../components/BackToTop';
 import FloatingMenuBtn from '../components/FloatingMenuBtn';
@@ -16,7 +16,7 @@ export default function Home() {
       <Header />
       <ProgressDashboard />
       <TopicList />
-      <QuizSection />
+      {/* <QuizSection /> */}
       <Footer />
       <BackToTop />
       <FloatingMenuBtn />
